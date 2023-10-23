@@ -14,6 +14,7 @@
 		AECB183A2AE57C4A00761D1B /* itsBreakTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18392AE57C4A00761D1B /* itsBreakTimeTests.swift */; };
 		AECB18442AE57C4A00761D1B /* itsBreakTimeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18432AE57C4A00761D1B /* itsBreakTimeUITests.swift */; };
 		AECB18462AE57C4A00761D1B /* itsBreakTimeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18452AE57C4A00761D1B /* itsBreakTimeUITestsLaunchTests.swift */; };
+		AECB18532AE57DDE00761D1B /* SelectTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18522AE57DDE00761D1B /* SelectTimeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		AECB183F2AE57C4A00761D1B /* itsBreakTimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = itsBreakTimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AECB18432AE57C4A00761D1B /* itsBreakTimeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itsBreakTimeUITests.swift; sourceTree = "<group>"; };
 		AECB18452AE57C4A00761D1B /* itsBreakTimeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itsBreakTimeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AECB18522AE57DDE00761D1B /* SelectTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				AECB18282AE57C4800761D1B /* itsBreakTimeApp.swift */,
 				AECB182A2AE57C4800761D1B /* ContentView.swift */,
+				AECB18522AE57DDE00761D1B /* SelectTimeView.swift */,
 				AECB182C2AE57C4A00761D1B /* Assets.xcassets */,
 				AECB182E2AE57C4A00761D1B /* Preview Content */,
 			);
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AECB182B2AE57C4800761D1B /* ContentView.swift in Sources */,
+				AECB18532AE57DDE00761D1B /* SelectTimeView.swift in Sources */,
 				AECB18292AE57C4800761D1B /* itsBreakTimeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

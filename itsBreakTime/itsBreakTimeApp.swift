@@ -11,7 +11,7 @@ import SwiftUI
 struct itsBreakTimeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(timeRemaining: .constant(Time(seconds: 100, minutes: 100)), isActive: .constant(true))
         }
     }
 }
