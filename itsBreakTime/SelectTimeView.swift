@@ -44,16 +44,20 @@ struct SelectTimeView: View {
         Presets(name: "Long Pomodoro", focusTime: Time(seconds: 0, minutes: 50), restTime: Time(seconds: 0, minutes: 10), id: 2)
     ]
     
-    func checkForZero() {
-        if selectedPreset.focusTime == Time(seconds: 0, minutes: 0) && selectedPreset.restTime == Time(seconds: 0, minutes: 0) {
-            selectedPreset.focusTime = presets[selectedPreset.id].focusTime
-            selectedPreset.restTime = presets[selectedPreset.id].restTime
-        }
-    }
+//    func checkForZero() {
+//        if selectedPreset.focusTime == Time(seconds: 0, minutes: 0) && selectedPreset.restTime == Time(seconds: 0, minutes: 0) {
+//            selectedPreset.focusTime = presets[selectedPreset.id].focusTime
+//            selectedPreset.restTime = presets[selectedPreset.id].restTime
+//        }
+//    }
     
     var body: some View {
         Form {
-            Text("Preset Selected: \(selectedPreset.name)")
+            var number = selectedPreset.id
+            //Text("Presets: \(presets[number].name)")
+            Text("selectedPreset.id = \(number)")
+            
+            
             isActive ? Text("isActive = true") : Text("isActive = false ")
             isFocused ? Text("isFocused = true") : Text("isFocused = false ")
             
@@ -62,9 +66,6 @@ struct SelectTimeView: View {
                     ForEach(presets) {preset in
                         Text(preset.name).tag(preset)
                     }
-//                    .onChange(of: selectedPreset) {
-//                        print(selectedPreset.focusTime)
-//                    }
                 }
                 
                 
@@ -100,6 +101,8 @@ struct SelectTimeView: View {
         }
         
         HStack {
+            
+            //Start Stop Button
             Button(action: {
                 isActive.toggle()
             }) {
@@ -110,10 +113,21 @@ struct SelectTimeView: View {
             .cornerRadius(5)
             .padding()
             
+            // Skip Button
             Button(action: {
                 isActive = false // pauses the timer
-                isFocused ? (selectedPreset.focusTime = Time(seconds: 0, minutes: 0)) : (selectedPreset.restTime = Time(seconds: 0, minutes: 0)) //reset to zero
+                
+                isFocused ? 
+                (selectedPreset.focusTime = Time(seconds: 0, minutes: 0)) :
+                (selectedPreset.restTime = Time(seconds: 0, minutes: 0))
+                
+                
                 isFocused.toggle() // Changes Focus -> Rest or Rest -> Focus
+                !isFocused ?
+                (selectedPreset.focusTime = presets[selectedPreset.id].focusTime) :
+                (selectedPreset.restTime = presets[selectedPreset.id].restTime)
+                
+
             }) {
                 Text("Skip")
             }
@@ -130,5 +144,5 @@ struct SelectTimeView: View {
 }
 
 #Preview {
-    SelectTimeView(isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 4))
+    SelectTimeView(isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 0))
 }
