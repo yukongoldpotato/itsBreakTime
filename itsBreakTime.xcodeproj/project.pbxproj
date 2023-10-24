@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AECB18292AE57C4800761D1B /* itsBreakTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18282AE57C4800761D1B /* itsBreakTimeApp.swift */; };
-		AECB182B2AE57C4800761D1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB182A2AE57C4800761D1B /* ContentView.swift */; };
+		AECB182B2AE57C4800761D1B /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB182A2AE57C4800761D1B /* TimerView.swift */; };
 		AECB182D2AE57C4A00761D1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AECB182C2AE57C4A00761D1B /* Assets.xcassets */; };
 		AECB18302AE57C4A00761D1B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AECB182F2AE57C4A00761D1B /* Preview Assets.xcassets */; };
 		AECB183A2AE57C4A00761D1B /* itsBreakTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB18392AE57C4A00761D1B /* itsBreakTimeTests.swift */; };
@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		AECB18252AE57C4800761D1B /* itsBreakTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = itsBreakTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AECB18282AE57C4800761D1B /* itsBreakTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itsBreakTimeApp.swift; sourceTree = "<group>"; };
-		AECB182A2AE57C4800761D1B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AECB182A2AE57C4800761D1B /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		AECB182C2AE57C4A00761D1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AECB182F2AE57C4A00761D1B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AECB18352AE57C4A00761D1B /* itsBreakTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = itsBreakTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				AECB18282AE57C4800761D1B /* itsBreakTimeApp.swift */,
-				AECB182A2AE57C4800761D1B /* ContentView.swift */,
+				AECB182A2AE57C4800761D1B /* TimerView.swift */,
 				AECB18522AE57DDE00761D1B /* SelectTimeView.swift */,
 				AECB182C2AE57C4A00761D1B /* Assets.xcassets */,
 				AECB182E2AE57C4A00761D1B /* Preview Content */,
@@ -260,7 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AECB182B2AE57C4800761D1B /* ContentView.swift in Sources */,
+				AECB182B2AE57C4800761D1B /* TimerView.swift in Sources */,
 				AECB18532AE57DDE00761D1B /* SelectTimeView.swift in Sources */,
 				AECB18292AE57C4800761D1B /* itsBreakTimeApp.swift in Sources */,
 			);

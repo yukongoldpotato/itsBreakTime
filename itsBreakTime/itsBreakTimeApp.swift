@@ -11,7 +11,7 @@ import SwiftUI
 struct itsBreakTimeApp: App {
     var body: some Scene {
         WindowGroup {
-            SelectTimeView(isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 0))
+            SelectTimeView(isZero: false, isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 0))
         }
     }
 }

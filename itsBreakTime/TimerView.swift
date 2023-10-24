@@ -12,10 +12,12 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct TimerView: View {
     
     @Binding var timeRemaining: Time
     @Binding var isActive: Bool
+    @Binding var isZero: Bool
+    
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -27,6 +29,8 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 if isActive && timeRemaining.totalSeconds > 0 {
                     timeRemaining.decrement() // decrement timeRemaining by 1 every second
+                } else if timeRemaining.totalSeconds == 0 {
+                    isZero = true 
                 }
             }
     }
@@ -34,5 +38,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView(timeRemaining: .constant(Time(seconds: 10, minutes: 2)), isActive: .constant(true))
+    TimerView(timeRemaining: .constant(Time(seconds: 10, minutes: 2)), isActive: .constant(true), isZero: .constant(false))
 }

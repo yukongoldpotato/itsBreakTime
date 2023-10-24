@@ -5,7 +5,13 @@
 //  Created by Kazuki Minami on 2023/10/22.
 //
 
+// Cool features to have:
+// For every one cycle (one focus + one rest), then log the cycle number
+// When timer runs out, toggle isActive, isFocused and notify the user
+// Dynamic Island!!
+
 import SwiftUI
+import UserNotifications
 
 struct Time: Hashable, Equatable {
     var seconds: Int
@@ -34,6 +40,8 @@ struct Presets: Identifiable, Hashable {
 
 struct SelectTimeView: View {
     
+    @State var isZero: Bool
+    @State var cycles: Int = 0
     @State var isFocused: Bool = true
     @State var sample: String = "Sample"
     @State var isActive: Bool
@@ -44,105 +52,112 @@ struct SelectTimeView: View {
         Presets(name: "Long Pomodoro", focusTime: Time(seconds: 0, minutes: 50), restTime: Time(seconds: 0, minutes: 10), id: 2)
     ]
     
-//    func checkForZero() {
-//        if selectedPreset.focusTime == Time(seconds: 0, minutes: 0) && selectedPreset.restTime == Time(seconds: 0, minutes: 0) {
-//            selectedPreset.focusTime = presets[selectedPreset.id].focusTime
-//            selectedPreset.restTime = presets[selectedPreset.id].restTime
-//        }
-//    }
-    
     var body: some View {
-        Form {
-            var number = selectedPreset.id
-            //Text("Presets: \(presets[number].name)")
-            Text("selectedPreset.id = \(number)")
-            
-            
-            isActive ? Text("isActive = true") : Text("isActive = false ")
-            isFocused ? Text("isFocused = true") : Text("isFocused = false ")
-            
-            Section(header: Text("Select Preset")) {
-                Picker("Preset: ",selection: $selectedPreset) {
-                    ForEach(presets) {preset in
-                        Text(preset.name).tag(preset)
-                    }
-                }
-                
-                
-                HStack {
-                    Picker("", selection: $selectedPreset.focusTime.minutes){
-                        ForEach(0..<60, id: \.self) { i in
-                            Text("\(i)").tag(i)
+        NavigationStack{
+            Form {
+                Section(header: Text("Select Preset")) {
+                    Picker("Preset: ",selection: $selectedPreset) {
+                        ForEach(presets) {preset in
+                            Text(preset.name).tag(preset)
                         }
                     }
-                    .pickerStyle(WheelPickerStyle())
+                    
+                    HStack {
+                        Picker("", selection: $selectedPreset.focusTime.minutes){
+                            ForEach(0..<60, id: \.self) { i in
+                                Text("\(i)").tag(i)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .padding(.horizontal)
+                        
+                        Text("Focus min")
+                        
+                        Picker("", selection: $selectedPreset.restTime.minutes){
+                            ForEach(0..<60, id: \.self) { i in
+                                Text("\(i)").tag(i)}}
+                        .pickerStyle(WheelPickerStyle())
+                        .padding(.horizontal)
+                        
+                        Text("Rest min")
+                    }
                     .padding(.horizontal)
-                    
-                    Text("Focus min")
-                    
-                    Picker("", selection: $selectedPreset.restTime.minutes){
-                        ForEach(0..<60, id: \.self) { i in
-                            Text("\(i)").tag(i)}}
-                    .pickerStyle(WheelPickerStyle())
-                    .padding(.horizontal)
-                    
-                    Text("Rest min")
                 }
-                .padding(.horizontal)
+                .disabled(isActive)
+                
+                Section(header: Text("Time Remaining")){
+                    HStack{
+                        Text(isFocused ? "Focus: " : "Rest: ")
+                        
+                        isFocused ? TimerView(timeRemaining: $selectedPreset.focusTime, isActive: $isActive, isZero: $isZero) : TimerView(timeRemaining: $selectedPreset.restTime, isActive: $isActive, isZero: $isZero)
+                    }
+                }
             }
-            .disabled(isActive)
             
-            Section(header: Text("Time Remaining")){
-                HStack{
-                    Text(isFocused ? "Focus: " : "Rest: ")
-                    isFocused ? ContentView(timeRemaining: $selectedPreset.focusTime, isActive: $isActive) : ContentView(timeRemaining: $selectedPreset.restTime, isActive: $isActive)
+            HStack {
+                
+                //Start Stop Button
+                Button(action: {
+                    isActive.toggle()
+                }) {
+                    Text(isActive ? "Stop" : "Go")
+                }
+                .foregroundStyle(isActive ? Color.red : Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(5)
+                .padding()
+                
+                // Skip Button
+                Button(action: {
+                    isActive = false // pauses the timer
+                    
+                    isFocused ?
+                    (selectedPreset.focusTime = Time(seconds: 0, minutes: 0)) :
+                    (selectedPreset.restTime = Time(seconds: 0, minutes: 0))
+                    
+                    
+                    isFocused.toggle() // Changes Focus -> Rest or Rest -> Focus
+                    !isFocused ?
+                    (selectedPreset.focusTime = presets[selectedPreset.id].focusTime) :
+                    (selectedPreset.restTime = presets[selectedPreset.id].restTime)
+                    
+                }) {
+                    Text("Skip")
+                }
+                .foregroundStyle(isFocused ? Color.mint : Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(5)
+                .padding()
+                
+                // Request Permissions Button
+                Button(action: {
+                    requestNotificationPermission()
+                }) {
+                    Text("Request Permission")
                 }
             }
+
+            .navigationBarTitle("Study Timer", displayMode: .large)
         }
         
-        HStack {
-            
-            //Start Stop Button
-            Button(action: {
-                isActive.toggle()
-            }) {
-                Text(isActive ? "Stop" : "Go")
-            }
-            .foregroundStyle(isActive ? Color.red : Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(5)
-            .padding()
-            
-            // Skip Button
-            Button(action: {
-                isActive = false // pauses the timer
-                
-                isFocused ? 
-                (selectedPreset.focusTime = Time(seconds: 0, minutes: 0)) :
-                (selectedPreset.restTime = Time(seconds: 0, minutes: 0))
-                
-                
-                isFocused.toggle() // Changes Focus -> Rest or Rest -> Focus
-                !isFocused ?
-                (selectedPreset.focusTime = presets[selectedPreset.id].focusTime) :
-                (selectedPreset.restTime = presets[selectedPreset.id].restTime)
-                
-
-            }) {
-                Text("Skip")
-            }
-            .foregroundStyle(isFocused ? Color.mint : Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(5)
-            .padding()
+        
+    }
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            // Handle granted or error here
         }
     }
     
-    
-
-
+    func checkForZero(){
+        if isZero {
+            isActive = false
+            isFocused.toggle()
+        }
+        
+    }
 }
 
 #Preview {
-    SelectTimeView(isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 0))
+    SelectTimeView(isZero: false, isActive: true, selectedPreset: Presets(name: "Sample", focusTime: Time(seconds: 0, minutes: 19), restTime: Time(seconds: 10, minutes: 45), id: 0))
 }
