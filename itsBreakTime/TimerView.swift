@@ -31,6 +31,7 @@ struct TimerView: View {
                     timeRemaining.decrement() // decrement timeRemaining by 1 every second
                 } else if timeRemaining.totalSeconds == 0 {
                     isZero = true 
+                    print("TimerView isZero true!")
                 }
             }
     }

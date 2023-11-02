@@ -55,13 +55,15 @@ struct SelectTimeView: View {
     var body: some View {
         NavigationStack{
             Form {
+                
+                Text("isZero: \(String(isZero))")
                 Section(header: Text("Select Preset")) {
                     Picker("Preset: ",selection: $selectedPreset) {
                         ForEach(presets) {preset in
                             Text(preset.name).tag(preset)
                         }
                     }
-                    
+    
                     HStack {
                         Picker("", selection: $selectedPreset.focusTime.minutes){
                             ForEach(0..<60, id: \.self) { i in
@@ -88,14 +90,13 @@ struct SelectTimeView: View {
                 Section(header: Text("Time Remaining")){
                     HStack{
                         Text(isFocused ? "Focus: " : "Rest: ")
-                        
                         isFocused ? TimerView(timeRemaining: $selectedPreset.focusTime, isActive: $isActive, isZero: $isZero) : TimerView(timeRemaining: $selectedPreset.restTime, isActive: $isActive, isZero: $isZero)
                     }
+
                 }
             }
             
             HStack {
-                
                 //Start Stop Button
                 Button(action: {
                     isActive.toggle()
@@ -115,8 +116,9 @@ struct SelectTimeView: View {
                     (selectedPreset.focusTime = Time(seconds: 0, minutes: 0)) :
                     (selectedPreset.restTime = Time(seconds: 0, minutes: 0))
                     
+                    isFocused.toggle() // Changes Focus -> Rest OR Rest -> Focus
                     
-                    isFocused.toggle() // Changes Focus -> Rest or Rest -> Focus
+                    // This basically just reserts the time if its not running
                     !isFocused ?
                     (selectedPreset.focusTime = presets[selectedPreset.id].focusTime) :
                     (selectedPreset.restTime = presets[selectedPreset.id].restTime)
@@ -133,25 +135,61 @@ struct SelectTimeView: View {
                 Button(action: {
                     requestNotificationPermission()
                 }) {
-                    Text("Request Permission")
+                    Text("RP")
+                }
+                
+                Button(action: {
+                    sendNotification(title: "Some Title", body: "Some String!@")
+                }) {
+                    Text("RTest")
                 }
             }
-
             .navigationBarTitle("Study Timer", displayMode: .large)
+
         }
-        
-        
+        .onChange(of: isZero){
+            checkForZero()
+            print("isZero is now true")
+        }
     }
     func requestNotificationPermission() {
+        print("Requesting notification permissions...")  // Add this line
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            // Handle granted or error here
+            if granted {
+                print("Permissions granted.")
+            } else {
+                print("Permissions denied.")
+            }
+            if let error = error {
+                print("Error requesting notifications permissions: \(error)")
+            }
         }
     }
     
+    func sendNotification(title: String, body: String) {
+        print("Sending NOtification")
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        // add our notification request
+        UNUserNotificationCenter.current().add(request)
+    } 
+
+
+    
     func checkForZero(){
         if isZero {
-            isActive = false
+            print("the function checkForZero works")
+            sendNotification(title: "Your Time is Up! ", body: "Time to take a break!")
+            isActive = false // is this useless?
             isFocused.toggle()
         }
         
